@@ -1,0 +1,14 @@
+# Ambientes virtuais
+venv/
+.env/
+.venv/
+
+# Cache do Python
+__pycache__/
+.ruff_cache/
+*.pyc
+*.pyo
+
+# Arquivos temporários
+*.tmp
+*.bak
