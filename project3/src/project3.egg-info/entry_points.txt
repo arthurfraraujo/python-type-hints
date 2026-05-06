@@ -1,2 +1,0 @@
-[console_scripts]
-project3 = my_package.my_module:run_from_script
