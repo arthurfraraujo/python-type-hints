@@ -81,3 +81,38 @@ Any
 - **Tipos compostos**: `Union`, `Optional`, `TypedDict`, `Protocol` permitem criar estruturas mais complexas.  
 - **Any**: o tipo mais genérico, aceita qualquer coisa.
 
+---
+## Dúvidas
+
+### Pergunta
+
+Por que no Python eu consigo fazer isso:
+
+```tupla_varios_valores: tuple[str, ...] = ("Valor", "...")```
+
+Mas não consigo fazer isso?
+
+```tupla_varios_valores: tuple[str, int, float, ...] = ("Valor", 234, 3.14, "...")```
+
+### Resposta:
+
+A anotação ```tuple[T, ...]``` significa: "uma tupla contendo zero ou mais elementos do tipo ```T```".
+
+O ```...``` aqui não é o mesmo ```Ellipsis``` literal do Python, mas uma sintaxe especial usada apenas em type hints para indicar repetição indefinida de um único tipo.
+
+Exemplo válido:
+  ```python
+  tupla_strings: tuple[str, ...] = ("a", "b", "c")
+  ```
+
+---
+
+## O que é o ```Union``` e o ```Sequence``` e qual a diferença entre eles?
+
+Ambos são **construtos de tipagem** usados em _type hints_ para descrever como os dados podem ser organizados ou quais tipos eles podem assumir.
+
+- ```Union:``` Um _tipo composto_ que indica que um valor pode ser de **um tipo ou outro**.
+
+- ```Sequence:``` Uma _interface de tipo abstrato_ que representa qualquer sequência ordenada (```list```, ```tuple```, ```range```, ```str```, etc.).
+
+> **Nota:** Percebi que preciso estudar mais a fundo a documentação do Python sobre _type hints_. Segue _url_ para futuras buscas: [Documentação Python Type Hints](https://docs.python.org/3/library/typing.html "Acessa a documentação do módulo typing").
