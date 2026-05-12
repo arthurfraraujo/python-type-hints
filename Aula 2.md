@@ -65,3 +65,55 @@ Um tipo é covariante quando a relação de subtipo é mantida. Se `Cachorro` é
 A segurança de tipos (ou _type safety_) é um conceito na ciência da computação que define o quanto uma linguagem de programação evita ou previne erros relacionados aos tipos de dados.
 
 Em termos simples: é o conjunto de regras que garante que o seu código não tente tratar um número como um texto, ou um arquivo como uma função, o que geralmente causaria um travamento ou comportamentos imprevisíveis.
+
+---
+
+## O que é o _Callable_?
+
+No Python, "Callable" significa, literalmente, algo que pode ser chamado (como uma função ou um método). Quando você usa Callable nos Type Hints, você está dizendo: _"Eu não quero apenas um dado (como um número ou texto), eu quero receber uma função como argumento"_.
+
+### Código de exemplo:
+
+```python
+def with_callback(x: float, y: float, callback: Callable[[...], None]) -> float:
+    result = x + y
+    callback(f"{result = }", 1, 2, 3, 4, 5)
+    return x + y
+```
+
+### 1. A Anatomia do `Callable[[...], None]`
+
+O `Callable` geralmente recebe dois grupos de informações dentro dos colchetes:
+
+1. **O que vem primeiro (entre colchetes):** São os tipos dos argumentos que a função deve receber.
+2. **O que vem depois da vírgula:** É o tipo do que a função retorna.
+
+No seu print, aparece assim: `Callable[..., None]`
+
+* **As reticências (`...`):** Significam "não me importa quantos ou quais argumentos essa função recebe". É um jeito de ser flexível.
+* **O `None`:** Significa que a função que for passada **não deve retornar nada** (ou retornar `None`). Ela é usada apenas para executar uma ação, como um `print`.
+
+### 2. Na prática: O que o `with_callback` faz?
+
+Imagine que o `with_callback` é um chefe de obra.
+
+* Ele recebe dois números (`x` e `y`).
+* Ele faz o cálculo: `result = x + y`.
+* Mas ele tem um assistente (o `callback`). O chefe não quer saber como o assistente trabalha, ele só dá uma ordem: *"Ei, assistente, tome aqui o resultado e esses números extras e faça o seu trabalho!"*.
+
+```python
+callback(f"{result = }", 1, 2, 3, 4, 5)
+
+```
+
+O `with_callback` não sabe se o `callback` vai imprimir isso na tela, salvar num arquivo ou mandar um e-mail. Ele só sabe que **pode chamar** aquela variável como se fosse uma função.
+
+### 3. Por que isso é útil? (A funcionalidade)
+
+Isso serve para criar códigos **genéricos** e **reutilizáveis**.
+
+Se você não usasse `Callable`, você teria que escrever o `print` direto dentro da função. Com o `Callable`, você permite que quem usar a sua função decida o que fazer com o resultado.
+
+---
+
+
