@@ -116,4 +116,47 @@ Se você não usasse `Callable`, você teria que escrever o `print` direto dentr
 
 ---
 
+## Limitação do Callable
 
+Apesar de ser ótimo para tipar argumentos posicionais, o Callable falha quando tem que tipar argumentos nomeados. **Callable é posicional por natureza.**
+
+### Exemplo de erro:
+
+```python
+from typing import Callable
+
+# Esta função EXIGE argumentos nomeados
+def minha_funcao(*, nome: str, idade: int) -> None:
+    print(nome, idade)
+
+# Se eu tentar tipar um callback para ela:
+def executor(callback: Callable[[str, int], None]):
+    # O Callable acha que vai chamar assim: callback("João", 30)
+    # Mas a função exige: callback(nome="João", idade=30)
+    callback("João", 30)
+```
+
+O verificador de tipos vai reclamar. O ```Callable``` não consegue garantir que o nome do parâmetro seja ```nome``` ou ```idade```. Ele só garante que o primeiro é ```str``` e o segundo é ```int```.
+
+### A solução: ```Protocol```(Tipagem Estrutural)
+
+Quando o ```Callable``` fica curto demais para o que você precisa, o Python oferece o ```Protocol```. Ele é como uma "interface" que permite descrever a assinatura completa da função, incluindo os nomes dos argumentos.
+
+> Será abordado com mais detalhes nas próximas aulas e por isso não aprofundarei os estudos no ```Protocol``` por enquanto.
+
+---
+
+## Dunder Methods (abreviação de Double Underscore)
+
+São os **protocolos internos do Python**. Eles permitem que suas próprias classes se comportem como objetos nativos da linguagem.
+
+- O que são: São nomes reservados que o Python chama "por baixo dos panos" em situações específicas.
+
+- **Exemplos comuns:**
+
+    - ```__init__```: Chamado quando você cria uma instância (```Classe()```).
+    - ```__str__```: Chamado quando você dá um ```print(objeto)```.
+    - ```__len__```: Chamado quando você faz ```len(objeto)```.
+    - ```__call__```: Chamado quando você trata o objeto como uma função (```objeto()```).
+
+> Para ter acesso aos outros protocolos internos do Python, acesse ()[]
