@@ -28,20 +28,20 @@ def obter_primeiro(lista: list[T]) -> T:
 
 A variância descreve como a relação entre tipos base (como `Animal` e `Cachorro`) se traduz para a relação entre tipos genéricos que os utilizam (como `Lista[Animal]` e `Lista[Cachorro]`).
 
-**A) Invariância (Padrão)**
+#### A) Invariância (Padrão)
 
 Por padrão, a maioria das classes no Python é **invariante**.
 Se `Cachorro` herda de `Animal`, uma `Lista[Cachorro]` **não** é considerada uma `Lista[Animal]` pelo verificador de tipos (como o Mypy).
 
 * **Por que?** Porque se você tratar uma lista de cachorros como uma lista de animais, você poderia tentar inserir um `Gato` nela, o que quebraria a lógica da lista original.
 
-**B) Covariância (`covariant=True`)**
+#### B) Covariância (`covariant=True`)
 
 Um tipo é covariante quando a relação de subtipo é mantida. Se `Cachorro` é um `Animal`, então `Caixa[Cachorro]` é um subtipo de `Caixa[Animal]`.
 
 * **Onde usar:** Geralmente em estruturas de **leitura apenas** (imutáveis), como tuplas.
 
-**C) Contravariância (`contravariant=True`)**
+#### C) Contravariância (`contravariant=True`)
 
 É o oposto. A relação de subtipo é invertida. Se `Cachorro` é um `Animal`, um `Processador[Animal]` é considerado um subtipo de `Processador[Cachorro]`.
 
@@ -72,7 +72,7 @@ Em termos simples: é o conjunto de regras que garante que o seu código não te
 
 No Python, "Callable" significa, literalmente, algo que pode ser chamado (como uma função ou um método). Quando você usa Callable nos Type Hints, você está dizendo: _"Eu não quero apenas um dado (como um número ou texto), eu quero receber uma função como argumento"_.
 
-### Código de exemplo:
+### Código de exemplo
 
 ```python
 def with_callback(x: float, y: float, callback: Callable[[...], None]) -> float:
@@ -99,7 +99,7 @@ Imagine que o `with_callback` é um chefe de obra.
 
 * Ele recebe dois números (`x` e `y`).
 * Ele faz o cálculo: `result = x + y`.
-* Mas ele tem um assistente (o `callback`). O chefe não quer saber como o assistente trabalha, ele só dá uma ordem: *"Ei, assistente, tome aqui o resultado e esses números extras e faça o seu trabalho!"*.
+* Mas ele tem um assistente (o `callback`). O chefe não quer saber como o assistente trabalha, ele só dá uma ordem: _"Ei, assistente, tome aqui o resultado e esses números extras e faça o seu trabalho!"_.
 
 ```python
 callback(f"{result = }", 1, 2, 3, 4, 5)
@@ -120,7 +120,7 @@ Se você não usasse `Callable`, você teria que escrever o `print` direto dentr
 
 Apesar de ser ótimo para tipar argumentos posicionais, o Callable falha quando tem que tipar argumentos nomeados. **Callable é posicional por natureza.**
 
-### Exemplo de erro:
+### Exemplo de erro
 
 ```python
 from typing import Callable
@@ -156,7 +156,7 @@ Aqui está uma versão "turbinada" das suas anotações, categorizada por funcio
 
 ## Dunder Methods
 
-Os Dunder Methods (ou *Magic Methods*) são a implementação do **Python Data Model**. Eles permitem o **Operator Overloading** (Sobrecarga de Operadores), fazendo com que suas classes customizadas integrem-se perfeitamente à sintaxe da linguagem.
+Os Dunder Methods são a implementação do **Python Data Model**. Eles permitem o **Operator Overloading** (Sobrecarga de Operadores), fazendo com que suas classes customizadas integrem-se perfeitamente à sintaxe da linguagem.
 
 ### 1. Ciclo de Vida do Objeto
 
@@ -172,9 +172,7 @@ Como o seu objeto se mostra para o mundo.
 
 * **`__str__`**: Focado no usuário final. O que aparece no `print()` ou `str()`. Deve ser legível.
 * **`__repr__`**: Focado no desenvolvedor. Deve ser "não ambíguo". Idealmente, se você copiar o que o `__repr__` retorna e colar no terminal, você recria o objeto.
-* *Dica de Ouro:* Se você não definir `__str__`, o Python usa o `__repr__` como reserva.
-
-
+* _Dica de Ouro:_ Se você não definir `__str__`, o Python usa o `__repr__` como reserva.
 
 ### 3. Protocolos de Coleção e Sequência
 
@@ -195,9 +193,7 @@ Dão significado a símbolos como `+`, `-`, `==`, `<`.
 ### 5. O Protocolo de Chamada (Callable)
 
 * **`__call__`**: Permite que a instância seja "chamada" como uma função: `obj()`.
-* *Por que usar?* É útil para manter estado entre chamadas (uma função que "lembra" quantas vezes foi usada, por exemplo).
-
-
+* _Por que usar?_ É útil para manter estado entre chamadas (uma função que "lembra" quantas vezes foi usada, por exemplo).
 
 ---
 
@@ -227,30 +223,30 @@ for m in rock:      # O Python entende como iterar usando o __getitem__!
 
 ---
 
-### Importante: Diferença entre ```def``` e ```lambda```.
+### Importante: Diferença entre ```def``` e ```lambda```
 
-- ```def```: Define um objeto do tipo ```function```, que possui nativamente o método ```__call__``` herdado da classe ```function```. Esse objeto é o que chamamos de função nomeada.
+* ```def```: Define um objeto do tipo ```function```, que possui nativamente o método ```__call__``` herdado da classe ```function```. Esse objeto é o que chamamos de função nomeada.
 
-    - **Características:** Requer obrigatoriamente um **nome** (identificador) e o uso da palavra-chave **return** para devolver um valor (caso contrário, retorna None por padrão).
+  * **Características:** Requer obrigatoriamente um **nome** (identificador) e o uso da palavra-chave **return** para devolver um valor (caso contrário, retorna None por padrão).
 
-    - **Sintaxe:** Possui um bloco de código identado, permitindo múltiplas instruções e lógica complexa.
+  * **Sintaxe:** Possui um bloco de código identado, permitindo múltiplas instruções e lógica complexa.
 
-    - **Exemplo:**
+  * **Exemplo:**
 
     ```python
     def my_function(x: int, y:int) -> int:
         return x + y
     ```
 
-- ```lambda```: Também define um objeto do tipo ```function``` com o método ```__call__```, contudo, ele é **anônimo** (não possui nome próprio no momento da criação).
+* ```lambda```: Também define um objeto do tipo ```function``` com o método ```__call__```, contudo, ele é **anônimo** (não possui nome próprio no momento da criação).
 
-    - **Características:** Possui sintaxe minimalista para execuções rápidas. Não utiliza a palavra-chave ```return```; o resultado da expressão após os dois-pontos é **retornado implicitamente**.
+  * **Características:** Possui sintaxe minimalista para execuções rápidas. Não utiliza a palavra-chave ```return```; o resultado da expressão após os dois-pontos é **retornado implicitamente**.
 
-    - **Limitação:** É restrito a uma única expressão (apenas uma linha de lógica).
+  * **Limitação:** É restrito a uma única expressão (apenas uma linha de lógica).
 
-    - **Sintaxe:** ```lambda argumentos: expressão```
+  * **Sintaxe:** ```lambda argumentos: expressão```
 
-    - **Exemplo:**
+  * **Exemplo:**
 
     ```python
     soma = lambda x, y: x + y
@@ -259,6 +255,7 @@ for m in rock:      # O Python entende como iterar usando o __getitem__!
     # Ou chamada direta (Immediately Invoked Function Expression):
     print(f"Soma direta: {(lambda x, y: x + y)(5, 5)}")
     ```
+
 ---
 
 ## Static Duck Typing (Tipagem de Pato Estática)
@@ -267,7 +264,7 @@ O **Static Duck Typing** é a evolução do "Duck Typing" tradicional do Python.
 
 ### 1. O Conceito (Filosofia)
 
-> *"Se ele caminha como um pato e grasna como um pato, então é um pato."*
+> _"Se ele caminha como um pato e grasna como um pato, então é um pato."_
 
 Diferente de C ou Java, o Python não foca na **Identidade** do objeto (quem ele é/de quem ele herda), mas sim no seu **Comportamento** (o que ele sabe fazer).
 
@@ -283,7 +280,7 @@ Para que essa forma de trabalhar não cause erros em tempo de execução, usamos
 * **Contrato Implícito:** Você define o `Protocol`, mas as classes que o "seguem" **não precisam herdar dele**.
 * **Checagem Estática:** Ferramentas como o Mypy ou o VS Code analisam se a classe possui os métodos definidos no `Protocol`. Se tiver, ela é considerada compatível.
 
-#### Exemplo Prático:
+#### Exemplo Prático
 
 ```python
 from typing import Protocol
