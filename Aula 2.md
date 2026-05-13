@@ -159,4 +159,101 @@ São os **protocolos internos do Python**. Eles permitem que suas próprias clas
     - ```__len__```: Chamado quando você faz ```len(objeto)```.
     - ```__call__```: Chamado quando você trata o objeto como uma função (```objeto()```).
 
-> Para ter acesso aos outros protocolos internos do Python, acesse ()[]
+---
+
+### Importante: Diferença entre ```def``` e ```lambda```.
+
+- ```def```: Define um objeto do tipo ```function```, que possui nativamente o método ```__call__``` herdado da classe ```function```. Esse objeto é o que chamamos de função nomeada.
+
+    - **Características:** Requer obrigatoriamente um **nome** (identificador) e o uso da palavra-chave **return** para devolver um valor (caso contrário, retorna None por padrão).
+
+    - **Sintaxe:** Possui um bloco de código identado, permitindo múltiplas instruções e lógica complexa.
+
+    - **Exemplo:**
+
+    ```python
+    def my_function(x: int, y:int) -> int:
+        return x + y
+    ```
+
+- ```lambda```: Também define um objeto do tipo ```function``` com o método ```__call__```, contudo, ele é **anônimo** (não possui nome próprio no momento da criação).
+
+    - **Características:** Possui sintaxe minimalista para execuções rápidas. Não utiliza a palavra-chave ```return```; o resultado da expressão após os dois-pontos é **retornado implicitamente**.
+
+    - **Limitação:** É restrito a uma única expressão (apenas uma linha de lógica).
+
+    - **Sintaxe:** ```lambda argumentos: expressão```
+
+    - **Exemplo:**
+
+    ```python
+    soma = lambda x, y: x + y
+    print(f"Resultado da soma: {soma(5, 5)}")
+
+    # Ou chamada direta (Immediately Invoked Function Expression):
+    print(f"Soma direta: {(lambda x, y: x + y)(5, 5)}")
+    ```
+---
+
+## Static Duck Typing (Tipagem de Pato Estática)
+
+O **Static Duck Typing** é a evolução do "Duck Typing" tradicional do Python. Ele permite que o código mantenha a liberdade do Python (comportamento > herança) com a segurança de linguagens estáticas (checagem antes de rodar).
+
+### 1. O Conceito (Filosofia)
+
+> *"Se ele caminha como um pato e grasna como um pato, então é um pato."*
+
+Diferente de C ou Java, o Python não foca na **Identidade** do objeto (quem ele é/de quem ele herda), mas sim no seu **Comportamento** (o que ele sabe fazer).
+
+* **Tipagem Nominal (C++/Java):** O objeto só é aceito se herdar explicitamente da classe pai exigida. (Relação de "Sangue").
+* **Tipagem Estrutural/Duck Typing (Python):** O objeto é aceito se possuir os métodos e atributos necessários. (Relação de "Capacidade").
+
+---
+
+### 2. O Instrumento: `typing.Protocol`
+
+Para que essa forma de trabalhar não cause erros em tempo de execução, usamos o `Protocol` para criar um **Contrato de Comportamento**.
+
+* **Contrato Implícito:** Você define o `Protocol`, mas as classes que o "seguem" **não precisam herdar dele**.
+* **Checagem Estática:** Ferramentas como o Mypy ou o VS Code analisam se a classe possui os métodos definidos no `Protocol`. Se tiver, ela é considerada compatível.
+
+#### Exemplo Prático:
+
+```python
+from typing import Protocol
+
+# 1. Defino o molde (O contrato)
+class Instrumento(Protocol):
+    def fazer_som(self) -> None: ...
+
+# 2. Crio classes independentes (Sem herança!)
+class Violao:
+    def fazer_som(self): print("Som de cordas")
+
+class Piano:
+    def fazer_som(self): print("Som de teclas")
+
+# 3. A função exige o protocolo, não a classe
+def tocar_musica(i: Instrumento):
+    i.fazer_som()
+
+# Funciona! O Python checa a estrutura, não o nome.
+tocar_musica(Violao()) 
+
+```
+
+---
+
+### 3. Por que isso é Disruptivo? (A visão do "Ex-C")
+
+* **Desacoplamento Total:** Você pode criar uma função que aceita objetos de bibliotecas que nem foram escritas ainda.
+* **Inversão de Dependência:** A função define o que ela precisa (o Protocolo), e o mundo externo se vira para entregar algo que encaixe.
+* **Dunder Methods como Cola:** O uso do `__call__` dentro de um `Protocol` permite que você trate objetos complexos como se fossem funções simples, unificando o comportamento de classes e funções.
+
+---
+
+### 4. Resumo
+
+* **Sem Protocolo:** É o "Duck Typing" puro. Se o método não existir na hora de rodar, o programa quebra.
+* **Com Protocolo:** É o "Static Duck Typing". O editor avisa se o "pato" é de mentira **antes** de você tentar fazê-lo grasnar.
+* **Herança vs. Protocolo:** Use **Herança** quando quiser herdar código pronto. Use **Protocolo** quando quiser apenas exigir um comportamento.
