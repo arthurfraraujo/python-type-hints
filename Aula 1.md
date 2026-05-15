@@ -13,9 +13,9 @@ Já em Python Moderno, chama-se _Type Annotations_, pois usa o sistema de _annot
 
 Acabei fazendo uma pequena confusão entre o _Ruff_ e o _Pyright_, assumindo que o ambos faziam a mesma coisa, mas não fazem. Abaixo detalho melhor a diferença dos dois.
 
-- ***Ruff:*** _linter_ e _formatter_. Responsável por corrigir (ou padronizar) o estilo do código e detectar problemas comuns, como imports errados e variáveis não utilizadas.
+- _**Ruff:**_ _linter_ e _formatter_. Responsável por corrigir (ou padronizar) o estilo do código e detectar problemas comuns, como imports errados e variáveis não utilizadas.
 
-- ***Pyright:*** _type checker_. Garante que as anotações de tipo sejam respeitadas e que valores errados não sejam aceitos (como em funções, por exemplo).
+- _**Pyright:**_ _type checker_. Garante que as anotações de tipo sejam respeitadas e que valores errados não sejam aceitos (como em funções, por exemplo).
 
 Dado o esclarecimento, podemos voltar ao fluxo normal da aula.
 
@@ -23,7 +23,7 @@ Dado o esclarecimento, podemos voltar ao fluxo normal da aula.
 
 ## Hierarquia dos tipos em Python
 
-```
+```Any
 Any
 ├── Numéricos
 │   ├── int
@@ -73,6 +73,7 @@ Any
 ```
 
 ## Explicação
+
 - **Tipos amplos**: `int`, `str`, `list`, `dict`, `bool`, `NoneType`.  
 - **Subtipos**: `Literal` é sempre um **valor específico** dentro de um tipo amplo.  
   - `Literal[3]` ⊂ `int`  
@@ -81,7 +82,8 @@ Any
 - **Tipos compostos**: `Union`, `Optional`, `TypedDict`, `Protocol` permitem criar estruturas mais complexas.  
 - **Any**: o tipo mais genérico, aceita qualquer coisa.
 
----
+----
+
 ## Dúvidas
 
 ### Pergunta
@@ -94,18 +96,19 @@ Mas não consigo fazer isso?
 
 ```tupla_varios_valores: tuple[str, int, float, ...] = ("Valor", 234, 3.14, "...")```
 
-### Resposta:
+### Resposta
 
 A anotação ```tuple[T, ...]``` significa: "uma tupla contendo zero ou mais elementos do tipo ```T```".
 
 O ```...``` aqui não é o mesmo ```Ellipsis``` literal do Python, mas uma sintaxe especial usada apenas em type hints para indicar repetição indefinida de um único tipo.
 
 Exemplo válido:
+
   ```python
   tupla_strings: tuple[str, ...] = ("a", "b", "c")
   ```
 
----
+----
 
 ## O que é o ```Union``` e o ```Sequence``` e qual a diferença entre eles?
 
