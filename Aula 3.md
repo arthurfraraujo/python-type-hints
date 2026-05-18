@@ -41,6 +41,8 @@ A Teoria dos Tipos classifica as linguagens em um espectro de poder (o famoso **
 
 ## Revisitando o conceito de Classes no Python
 
+> Conceitos para RUNTIME (código em tempo de execução).
+
 * ```Classes``` são fábricas de ```objetos```. Elas funcionam como moldes para gerar novas estruturas de dados na linguagem.
 * **Por exemplo:** Ao criar a ```classe``` "Animal", o que você fez foi criar uma nova fábrica de ```objetos``` do tipo "Animal".
 * Tudo o que foi definido em "Animal" (o molde), será passado para os ```objetos``` fabricados pela ```classe``` "Animal".
@@ -148,3 +150,15 @@ if __name__ == "__main__":
 ```
 
 * **Características:** uso de ```dataclass``` para reduzir _boilerplate_, validação com ```__post_init__```, propriedades para controle.
+
+---
+
+> Conceito para _Type Checkers_ (código não executado).
+
+* ```Classes``` criam tipos. Assim como criamos "Animal" porque não encontramos um "Animal" pronto no Python, para o _Type Checker_, ao criar um "Animal", você acabou de criar um novo tipo na linguagem chamada "Animal. Esse tipo de tipagem é chamado de **Tipagem nominal** ou _**Nominal typing**_.
+
+* Todas as instâncias do animal são do TIPO "Animal".
+
+* Se eu criar uma função que precisa receber um "Animal" (do exemplo anterior), "dog" ou "cat" vão servir.
+
+* É por conta da tipagem nominal que quando precisamos de algo muito amplo, usamos ```object```. A frase "em Python tudo é um objeto" confirma isso.
